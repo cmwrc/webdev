@@ -1,0 +1,336 @@
+/*
+SQLyog Ultimate v12.11 (64 bit)
+MySQL - 5.6.16 : Database - cmwrc_ticket_db
+*********************************************************************
+*/
+
+/*!40101 SET NAMES utf8 */;
+
+/*!40101 SET SQL_MODE=''*/;
+
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/`cmwrc_ticket_db` /*!40100 DEFAULT CHARACTER SET latin1 */;
+
+/*Table structure for table `eventmaster` */
+
+CREATE TABLE `eventmaster` (
+  `eventIDNum` int(11) NOT NULL AUTO_INCREMENT,
+  `eventIDName` varchar(255) NOT NULL,
+  `eventStartDate` date NOT NULL,
+  `eventEndDate` date NOT NULL,
+  `ticketSaleStartDate` date NOT NULL,
+  `ticketSaleEndDate` date NOT NULL,
+  `walletID` varchar(255) NOT NULL,
+  `childCareOption` char(1) DEFAULT NULL,
+  `specialNeedsOption` char(1) DEFAULT NULL,
+  `optInOptOut` char(1) DEFAULT NULL,
+  `creditCard` char(1) DEFAULT NULL,
+  `eCheck` char(1) DEFAULT NULL,
+  `cash` char(1) DEFAULT NULL,
+  `check` char(1) DEFAULT NULL,
+  `IOU` char(1) DEFAULT NULL,
+  `ccFeePercent` float DEFAULT NULL,
+  `closeOutMessage` varchar(255) DEFAULT NULL,
+  `maxAdultTickets` int(11) DEFAULT NULL,
+  `maxChildTickets` int(11) DEFAULT NULL,
+  `maxYouthTickets` int(11) DEFAULT NULL,
+  `adultColLabel` varchar(255) DEFAULT 'Adult (Age > 21)',
+  `childColLabel` varchar(255) DEFAULT 'Child (Age < 15)',
+  `youthColLabel` varchar(255) DEFAULT 'Youth (Age bet 16 and 21)',
+  `eventName` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`eventIDNum`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+/*Data for the table `eventmaster` */
+
+insert  into `eventmaster`(`eventIDNum`,`eventIDName`,`eventStartDate`,`eventEndDate`,`ticketSaleStartDate`,`ticketSaleEndDate`,`walletID`,`childCareOption`,`specialNeedsOption`,`optInOptOut`,`creditCard`,`eCheck`,`cash`,`check`,`IOU`,`ccFeePercent`,`closeOutMessage`,`maxAdultTickets`,`maxChildTickets`,`maxYouthTickets`,`adultColLabel`,`childColLabel`,`youthColLabel`,`eventName`) values (1,'GeetRamayana2016','2016-05-21','2016-05-22','2016-03-01','2016-05-20','GEETRAMA2016','Y','Y','Y','Y','Y','N','N','Y',2,NULL,NULL,NULL,NULL,'Adult(Age >21)','Child (Age<15)','Youth (Age bet 16 and 21)','Geet Ramayan 2016');
+
+/*Table structure for table `familypreferences` */
+
+CREATE TABLE `familypreferences` (
+  `familyId` int(11) NOT NULL,
+  `childCareOption` char(1) DEFAULT NULL,
+  `specialNeedOption` char(1) DEFAULT NULL,
+  `optInoptOut` char(1) DEFAULT NULL,
+  PRIMARY KEY (`familyId`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+/*Data for the table `familypreferences` */
+
+/*Table structure for table `sevakcredentials` */
+
+CREATE TABLE `sevakcredentials` (
+  `sevakId` int(11) NOT NULL,
+  `sevakName` varchar(512) NOT NULL,
+  `sevakEmail` varchar(512) NOT NULL,
+  `sevakAccessPIN` int(11) DEFAULT NULL,
+  `sevakPhone` varchar(255) DEFAULT NULL,
+  `active` char(1) DEFAULT 'Y',
+  PRIMARY KEY (`sevakId`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+/*Data for the table `sevakcredentials` */
+
+/*Table structure for table `ticketoptions` */
+
+CREATE TABLE `ticketoptions` (
+  `ticketOptionId` int(11) NOT NULL AUTO_INCREMENT,
+  `ticketEventId` int(11) NOT NULL,
+  `ticketCode` varchar(255) NOT NULL,
+  `ticketDescription` varchar(512) DEFAULT NULL,
+  `adultTicketPrice` int(11) NOT NULL,
+  `childTicketPrice` int(11) NOT NULL,
+  `youthTicketPrice` int(11) NOT NULL,
+  `effectiveStart` date NOT NULL,
+  `effectiveEnd` date NOT NULL,
+  `donationAmountPortion` float DEFAULT NULL,
+  `optionMessage` year(4) DEFAULT NULL,
+  PRIMARY KEY (`ticketOptionId`),
+  KEY `ticketEventId` (`ticketEventId`),
+  CONSTRAINT `ticketoptions_ibfk_1` FOREIGN KEY (`ticketEventId`) REFERENCES `eventmaster` (`eventIDNum`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=latin1;
+
+/*Data for the table `ticketoptions` */
+
+insert  into `ticketoptions`(`ticketOptionId`,`ticketEventId`,`ticketCode`,`ticketDescription`,`adultTicketPrice`,`childTicketPrice`,`youthTicketPrice`,`effectiveStart`,`effectiveEnd`,`donationAmountPortion`,`optionMessage`) values (1,1,'SatFrontSec','Saturday Front Section',20,15,15,'2016-03-01','2016-05-07',0,0000);
+insert  into `ticketoptions`(`ticketOptionId`,`ticketEventId`,`ticketCode`,`ticketDescription`,`adultTicketPrice`,`childTicketPrice`,`youthTicketPrice`,`effectiveStart`,`effectiveEnd`,`donationAmountPortion`,`optionMessage`) values (2,1,'SunFrontSec','Sunday Front Section',20,15,15,'2016-03-01','2016-05-07',0,0000);
+insert  into `ticketoptions`(`ticketOptionId`,`ticketEventId`,`ticketCode`,`ticketDescription`,`adultTicketPrice`,`childTicketPrice`,`youthTicketPrice`,`effectiveStart`,`effectiveEnd`,`donationAmountPortion`,`optionMessage`) values (3,1,'BothDayFrontSec','Both Day Front Section',30,20,20,'2016-03-01','2016-05-07',0,0000);
+insert  into `ticketoptions`(`ticketOptionId`,`ticketEventId`,`ticketCode`,`ticketDescription`,`adultTicketPrice`,`childTicketPrice`,`youthTicketPrice`,`effectiveStart`,`effectiveEnd`,`donationAmountPortion`,`optionMessage`) values (4,1,'SatRearSec','Saturday Back Section',25,15,15,'2016-03-01','2016-05-07',0,0000);
+insert  into `ticketoptions`(`ticketOptionId`,`ticketEventId`,`ticketCode`,`ticketDescription`,`adultTicketPrice`,`childTicketPrice`,`youthTicketPrice`,`effectiveStart`,`effectiveEnd`,`donationAmountPortion`,`optionMessage`) values (5,1,'SunRearSec','Sunday Rear Section',25,15,15,'2016-03-01','2016-05-07',0,0000);
+insert  into `ticketoptions`(`ticketOptionId`,`ticketEventId`,`ticketCode`,`ticketDescription`,`adultTicketPrice`,`childTicketPrice`,`youthTicketPrice`,`effectiveStart`,`effectiveEnd`,`donationAmountPortion`,`optionMessage`) values (6,1,'BothDayRearSec','Both Day Rear Section',40,20,20,'2016-03-01','2016-05-07',0,0000);
+insert  into `ticketoptions`(`ticketOptionId`,`ticketEventId`,`ticketCode`,`ticketDescription`,`adultTicketPrice`,`childTicketPrice`,`youthTicketPrice`,`effectiveStart`,`effectiveEnd`,`donationAmountPortion`,`optionMessage`) values (13,1,'SatFrontSec','Saturday Front Section',40,15,15,'2016-05-08','2016-05-23',0,0000);
+insert  into `ticketoptions`(`ticketOptionId`,`ticketEventId`,`ticketCode`,`ticketDescription`,`adultTicketPrice`,`childTicketPrice`,`youthTicketPrice`,`effectiveStart`,`effectiveEnd`,`donationAmountPortion`,`optionMessage`) values (14,1,'SunFrontSec','Sunday Front Section',40,15,15,'2016-05-08','2016-05-23',NULL,0000);
+insert  into `ticketoptions`(`ticketOptionId`,`ticketEventId`,`ticketCode`,`ticketDescription`,`adultTicketPrice`,`childTicketPrice`,`youthTicketPrice`,`effectiveStart`,`effectiveEnd`,`donationAmountPortion`,`optionMessage`) values (15,1,'BothDayFrontSec','Both Day Front Section',60,20,20,'2016-05-08','2016-05-23',NULL,0000);
+insert  into `ticketoptions`(`ticketOptionId`,`ticketEventId`,`ticketCode`,`ticketDescription`,`adultTicketPrice`,`childTicketPrice`,`youthTicketPrice`,`effectiveStart`,`effectiveEnd`,`donationAmountPortion`,`optionMessage`) values (24,1,'SatRearSec','Saturday Rear Section',50,15,15,'2016-05-08','2016-05-23',NULL,0000);
+insert  into `ticketoptions`(`ticketOptionId`,`ticketEventId`,`ticketCode`,`ticketDescription`,`adultTicketPrice`,`childTicketPrice`,`youthTicketPrice`,`effectiveStart`,`effectiveEnd`,`donationAmountPortion`,`optionMessage`) values (25,1,'SunRearSec','Sunday Rear Section',50,15,15,'2016-05-08','2016-05-23',NULL,0000);
+insert  into `ticketoptions`(`ticketOptionId`,`ticketEventId`,`ticketCode`,`ticketDescription`,`adultTicketPrice`,`childTicketPrice`,`youthTicketPrice`,`effectiveStart`,`effectiveEnd`,`donationAmountPortion`,`optionMessage`) values (26,1,'BothDayRearSec','Both Days Rear Section',75,20,20,'2016-05-08','2016-05-23',NULL,0000);
+
+/*Table structure for table `ticketpickuplocations` */
+
+CREATE TABLE `ticketpickuplocations` (
+  `locationId` int(11) NOT NULL AUTO_INCREMENT,
+  `eventId` int(11) NOT NULL,
+  `locationDescription` varchar(512) DEFAULT NULL,
+  `locationIdName` varchar(255) NOT NULL,
+  PRIMARY KEY (`locationId`),
+  KEY `eventIdConstr` (`eventId`),
+  CONSTRAINT `eventIdConstr` FOREIGN KEY (`eventId`) REFERENCES `eventmaster` (`eventIDNum`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+
+/*Data for the table `ticketpickuplocations` */
+
+insert  into `ticketpickuplocations`(`locationId`,`eventId`,`locationDescription`,`locationIdName`) values (1,1,'Chinmayam','CHMD');
+insert  into `ticketpickuplocations`(`locationId`,`eventId`,`locationDescription`,`locationIdName`) values (2,1,'Chinmaya Somnath','CSVA');
+insert  into `ticketpickuplocations`(`locationId`,`eventId`,`locationDescription`,`locationIdName`) values (3,1,'Chinmaya Fredrick','CHFD');
+insert  into `ticketpickuplocations`(`locationId`,`eventId`,`locationDescription`,`locationIdName`) values (5,1,'At Venue','Venue');
+
+/*Table structure for table `ticketsalesdetails` */
+
+CREATE TABLE `ticketsalesdetails` (
+  `shoppingCartId` int(11) NOT NULL,
+  `familyId` int(11) DEFAULT NULL,
+  `ticketCode` varchar(255) NOT NULL,
+  `adultTicketCount` int(11) NOT NULL DEFAULT '0',
+  `childTicketCount` int(11) NOT NULL DEFAULT '0',
+  `youthTicketCount` int(11) NOT NULL DEFAULT '0',
+  `ticketDetails` varchar(255) DEFAULT NULL,
+  `comments` varchar(255) DEFAULT NULL,
+  KEY `familyId` (`familyId`),
+  KEY `shoppingCartId` (`shoppingCartId`),
+  CONSTRAINT `ticketsalesdetails_ibfk_2` FOREIGN KEY (`shoppingCartId`) REFERENCES `ticketsalesmaster` (`shoppingCartId`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  CONSTRAINT `ticketsalesdetails_ibfk_1` FOREIGN KEY (`familyId`) REFERENCES `familypreferences` (`familyId`) ON DELETE NO ACTION ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+/*Data for the table `ticketsalesdetails` */
+
+insert  into `ticketsalesdetails`(`shoppingCartId`,`familyId`,`ticketCode`,`adultTicketCount`,`childTicketCount`,`youthTicketCount`,`ticketDetails`,`comments`) values (1000,NULL,'SatFrontSec',1,0,0,NULL,NULL);
+insert  into `ticketsalesdetails`(`shoppingCartId`,`familyId`,`ticketCode`,`adultTicketCount`,`childTicketCount`,`youthTicketCount`,`ticketDetails`,`comments`) values (1000,NULL,'SunFrontSec',0,2,0,NULL,NULL);
+insert  into `ticketsalesdetails`(`shoppingCartId`,`familyId`,`ticketCode`,`adultTicketCount`,`childTicketCount`,`youthTicketCount`,`ticketDetails`,`comments`) values (1000,NULL,'BothDayFrontSec',0,0,1,NULL,NULL);
+insert  into `ticketsalesdetails`(`shoppingCartId`,`familyId`,`ticketCode`,`adultTicketCount`,`childTicketCount`,`youthTicketCount`,`ticketDetails`,`comments`) values (1000,NULL,'SatBackSec',1,0,0,NULL,NULL);
+insert  into `ticketsalesdetails`(`shoppingCartId`,`familyId`,`ticketCode`,`adultTicketCount`,`childTicketCount`,`youthTicketCount`,`ticketDetails`,`comments`) values (1000,NULL,'SunBackSec',0,2,0,NULL,NULL);
+insert  into `ticketsalesdetails`(`shoppingCartId`,`familyId`,`ticketCode`,`adultTicketCount`,`childTicketCount`,`youthTicketCount`,`ticketDetails`,`comments`) values (1000,NULL,'BothDayBackSec',0,0,1,NULL,NULL);
+insert  into `ticketsalesdetails`(`shoppingCartId`,`familyId`,`ticketCode`,`adultTicketCount`,`childTicketCount`,`youthTicketCount`,`ticketDetails`,`comments`) values (1001,NULL,'SatFrontSec',1,0,0,NULL,NULL);
+insert  into `ticketsalesdetails`(`shoppingCartId`,`familyId`,`ticketCode`,`adultTicketCount`,`childTicketCount`,`youthTicketCount`,`ticketDetails`,`comments`) values (1001,NULL,'SatBackSec',2,0,0,NULL,NULL);
+insert  into `ticketsalesdetails`(`shoppingCartId`,`familyId`,`ticketCode`,`adultTicketCount`,`childTicketCount`,`youthTicketCount`,`ticketDetails`,`comments`) values (1001,NULL,'SunBackSec',0,4,0,NULL,NULL);
+insert  into `ticketsalesdetails`(`shoppingCartId`,`familyId`,`ticketCode`,`adultTicketCount`,`childTicketCount`,`youthTicketCount`,`ticketDetails`,`comments`) values (1001,NULL,'BothDayBackSec',0,0,1,NULL,NULL);
+insert  into `ticketsalesdetails`(`shoppingCartId`,`familyId`,`ticketCode`,`adultTicketCount`,`childTicketCount`,`youthTicketCount`,`ticketDetails`,`comments`) values (1002,NULL,'SatFrontSec',1,0,0,NULL,NULL);
+insert  into `ticketsalesdetails`(`shoppingCartId`,`familyId`,`ticketCode`,`adultTicketCount`,`childTicketCount`,`youthTicketCount`,`ticketDetails`,`comments`) values (1002,NULL,'SunFrontSec',0,1,0,NULL,NULL);
+insert  into `ticketsalesdetails`(`shoppingCartId`,`familyId`,`ticketCode`,`adultTicketCount`,`childTicketCount`,`youthTicketCount`,`ticketDetails`,`comments`) values (1002,NULL,'BothDayFrontSec',0,0,1,NULL,NULL);
+insert  into `ticketsalesdetails`(`shoppingCartId`,`familyId`,`ticketCode`,`adultTicketCount`,`childTicketCount`,`youthTicketCount`,`ticketDetails`,`comments`) values (1002,NULL,'SatBackSec',2,0,0,NULL,NULL);
+insert  into `ticketsalesdetails`(`shoppingCartId`,`familyId`,`ticketCode`,`adultTicketCount`,`childTicketCount`,`youthTicketCount`,`ticketDetails`,`comments`) values (1002,NULL,'SunBackSec',0,1,0,NULL,NULL);
+insert  into `ticketsalesdetails`(`shoppingCartId`,`familyId`,`ticketCode`,`adultTicketCount`,`childTicketCount`,`youthTicketCount`,`ticketDetails`,`comments`) values (1002,NULL,'BothDayBackSec',0,0,1,NULL,NULL);
+insert  into `ticketsalesdetails`(`shoppingCartId`,`familyId`,`ticketCode`,`adultTicketCount`,`childTicketCount`,`youthTicketCount`,`ticketDetails`,`comments`) values (1003,NULL,'SatFrontSec',1,0,0,NULL,NULL);
+insert  into `ticketsalesdetails`(`shoppingCartId`,`familyId`,`ticketCode`,`adultTicketCount`,`childTicketCount`,`youthTicketCount`,`ticketDetails`,`comments`) values (1004,NULL,'SatFrontSec',1,0,0,NULL,NULL);
+insert  into `ticketsalesdetails`(`shoppingCartId`,`familyId`,`ticketCode`,`adultTicketCount`,`childTicketCount`,`youthTicketCount`,`ticketDetails`,`comments`) values (1005,NULL,'SatFrontSec',1,0,0,NULL,NULL);
+insert  into `ticketsalesdetails`(`shoppingCartId`,`familyId`,`ticketCode`,`adultTicketCount`,`childTicketCount`,`youthTicketCount`,`ticketDetails`,`comments`) values (1005,NULL,'BothDayRearSec',1,0,0,NULL,NULL);
+insert  into `ticketsalesdetails`(`shoppingCartId`,`familyId`,`ticketCode`,`adultTicketCount`,`childTicketCount`,`youthTicketCount`,`ticketDetails`,`comments`) values (1006,NULL,'SatFrontSec',1,0,0,NULL,NULL);
+insert  into `ticketsalesdetails`(`shoppingCartId`,`familyId`,`ticketCode`,`adultTicketCount`,`childTicketCount`,`youthTicketCount`,`ticketDetails`,`comments`) values (1006,NULL,'BothDayFrontSec',0,19,0,NULL,NULL);
+insert  into `ticketsalesdetails`(`shoppingCartId`,`familyId`,`ticketCode`,`adultTicketCount`,`childTicketCount`,`youthTicketCount`,`ticketDetails`,`comments`) values (1006,NULL,'BothDayRearSec',0,0,19,NULL,NULL);
+insert  into `ticketsalesdetails`(`shoppingCartId`,`familyId`,`ticketCode`,`adultTicketCount`,`childTicketCount`,`youthTicketCount`,`ticketDetails`,`comments`) values (1007,NULL,'SatFrontSec',1,0,0,NULL,NULL);
+insert  into `ticketsalesdetails`(`shoppingCartId`,`familyId`,`ticketCode`,`adultTicketCount`,`childTicketCount`,`youthTicketCount`,`ticketDetails`,`comments`) values (1007,NULL,'SunFrontSec',0,1,0,NULL,NULL);
+insert  into `ticketsalesdetails`(`shoppingCartId`,`familyId`,`ticketCode`,`adultTicketCount`,`childTicketCount`,`youthTicketCount`,`ticketDetails`,`comments`) values (1007,NULL,'BothDayFrontSec',0,0,1,NULL,NULL);
+insert  into `ticketsalesdetails`(`shoppingCartId`,`familyId`,`ticketCode`,`adultTicketCount`,`childTicketCount`,`youthTicketCount`,`ticketDetails`,`comments`) values (1008,NULL,'Saturday Front Section',2,0,0,NULL,NULL);
+insert  into `ticketsalesdetails`(`shoppingCartId`,`familyId`,`ticketCode`,`adultTicketCount`,`childTicketCount`,`youthTicketCount`,`ticketDetails`,`comments`) values (1008,NULL,'Sunday Front Section',0,1,0,NULL,NULL);
+insert  into `ticketsalesdetails`(`shoppingCartId`,`familyId`,`ticketCode`,`adultTicketCount`,`childTicketCount`,`youthTicketCount`,`ticketDetails`,`comments`) values (1008,NULL,'Sunday Rear Section',2,0,0,NULL,NULL);
+
+/*Table structure for table `ticketsalesdetailscopy` */
+
+CREATE TABLE `ticketsalesdetailscopy` (
+  `shoppingCartId` int(11) NOT NULL,
+  `familyId` int(11) DEFAULT NULL,
+  `ticketCode` varchar(255) NOT NULL,
+  `adultTicketCount` int(11) NOT NULL,
+  `childTicketCount` int(11) NOT NULL,
+  `youthTicketCount` int(11) NOT NULL,
+  `ticketDetails` varchar(255) DEFAULT NULL,
+  `comments` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+/*Data for the table `ticketsalesdetailscopy` */
+
+insert  into `ticketsalesdetailscopy`(`shoppingCartId`,`familyId`,`ticketCode`,`adultTicketCount`,`childTicketCount`,`youthTicketCount`,`ticketDetails`,`comments`) values (123,354,'BothBackSec',1,0,0,NULL,NULL);
+insert  into `ticketsalesdetailscopy`(`shoppingCartId`,`familyId`,`ticketCode`,`adultTicketCount`,`childTicketCount`,`youthTicketCount`,`ticketDetails`,`comments`) values (123,354,'SunBackSec',1,1,2,NULL,NULL);
+insert  into `ticketsalesdetailscopy`(`shoppingCartId`,`familyId`,`ticketCode`,`adultTicketCount`,`childTicketCount`,`youthTicketCount`,`ticketDetails`,`comments`) values (33,NULL,'SatFrontSec',1,0,0,NULL,NULL);
+insert  into `ticketsalesdetailscopy`(`shoppingCartId`,`familyId`,`ticketCode`,`adultTicketCount`,`childTicketCount`,`youthTicketCount`,`ticketDetails`,`comments`) values (33,NULL,'SunFrontSec',1,0,0,NULL,NULL);
+insert  into `ticketsalesdetailscopy`(`shoppingCartId`,`familyId`,`ticketCode`,`adultTicketCount`,`childTicketCount`,`youthTicketCount`,`ticketDetails`,`comments`) values (33,NULL,'BothDayFrontSec',1,0,0,NULL,NULL);
+insert  into `ticketsalesdetailscopy`(`shoppingCartId`,`familyId`,`ticketCode`,`adultTicketCount`,`childTicketCount`,`youthTicketCount`,`ticketDetails`,`comments`) values (33,NULL,'SatBackSec',1,0,0,NULL,NULL);
+insert  into `ticketsalesdetailscopy`(`shoppingCartId`,`familyId`,`ticketCode`,`adultTicketCount`,`childTicketCount`,`youthTicketCount`,`ticketDetails`,`comments`) values (33,NULL,'SunBackSec',1,0,0,NULL,NULL);
+insert  into `ticketsalesdetailscopy`(`shoppingCartId`,`familyId`,`ticketCode`,`adultTicketCount`,`childTicketCount`,`youthTicketCount`,`ticketDetails`,`comments`) values (33,NULL,'BothDayBackSec',1,0,0,NULL,NULL);
+insert  into `ticketsalesdetailscopy`(`shoppingCartId`,`familyId`,`ticketCode`,`adultTicketCount`,`childTicketCount`,`youthTicketCount`,`ticketDetails`,`comments`) values (34,NULL,'SatFrontSec',17,0,0,NULL,NULL);
+insert  into `ticketsalesdetailscopy`(`shoppingCartId`,`familyId`,`ticketCode`,`adultTicketCount`,`childTicketCount`,`youthTicketCount`,`ticketDetails`,`comments`) values (34,NULL,'SunFrontSec',17,0,0,NULL,NULL);
+insert  into `ticketsalesdetailscopy`(`shoppingCartId`,`familyId`,`ticketCode`,`adultTicketCount`,`childTicketCount`,`youthTicketCount`,`ticketDetails`,`comments`) values (34,NULL,'BothDayFrontSec',17,0,0,NULL,NULL);
+insert  into `ticketsalesdetailscopy`(`shoppingCartId`,`familyId`,`ticketCode`,`adultTicketCount`,`childTicketCount`,`youthTicketCount`,`ticketDetails`,`comments`) values (34,NULL,'SatBackSec',17,0,0,NULL,NULL);
+insert  into `ticketsalesdetailscopy`(`shoppingCartId`,`familyId`,`ticketCode`,`adultTicketCount`,`childTicketCount`,`youthTicketCount`,`ticketDetails`,`comments`) values (34,NULL,'SunBackSec',17,0,0,NULL,NULL);
+insert  into `ticketsalesdetailscopy`(`shoppingCartId`,`familyId`,`ticketCode`,`adultTicketCount`,`childTicketCount`,`youthTicketCount`,`ticketDetails`,`comments`) values (34,NULL,'BothDayBackSec',17,0,0,NULL,NULL);
+insert  into `ticketsalesdetailscopy`(`shoppingCartId`,`familyId`,`ticketCode`,`adultTicketCount`,`childTicketCount`,`youthTicketCount`,`ticketDetails`,`comments`) values (35,NULL,'SatFrontSec',1,0,0,NULL,NULL);
+insert  into `ticketsalesdetailscopy`(`shoppingCartId`,`familyId`,`ticketCode`,`adultTicketCount`,`childTicketCount`,`youthTicketCount`,`ticketDetails`,`comments`) values (35,NULL,'SunFrontSec',0,16,0,NULL,NULL);
+insert  into `ticketsalesdetailscopy`(`shoppingCartId`,`familyId`,`ticketCode`,`adultTicketCount`,`childTicketCount`,`youthTicketCount`,`ticketDetails`,`comments`) values (35,NULL,'BothDayFrontSec',0,0,19,NULL,NULL);
+insert  into `ticketsalesdetailscopy`(`shoppingCartId`,`familyId`,`ticketCode`,`adultTicketCount`,`childTicketCount`,`youthTicketCount`,`ticketDetails`,`comments`) values (35,NULL,'SatBackSec',1,0,0,NULL,NULL);
+insert  into `ticketsalesdetailscopy`(`shoppingCartId`,`familyId`,`ticketCode`,`adultTicketCount`,`childTicketCount`,`youthTicketCount`,`ticketDetails`,`comments`) values (35,NULL,'SunBackSec',0,16,0,NULL,NULL);
+insert  into `ticketsalesdetailscopy`(`shoppingCartId`,`familyId`,`ticketCode`,`adultTicketCount`,`childTicketCount`,`youthTicketCount`,`ticketDetails`,`comments`) values (35,NULL,'BothDayBackSec',0,0,19,NULL,NULL);
+
+/*Table structure for table `ticketsalesmaster` */
+
+CREATE TABLE `ticketsalesmaster` (
+  `shoppingCartId` int(11) NOT NULL AUTO_INCREMENT,
+  `firstName` varchar(255) NOT NULL,
+  `lastName` varchar(255) NOT NULL,
+  `addressLine1` varchar(512) NOT NULL,
+  `addressLine2` varchar(512) DEFAULT NULL,
+  `city` varchar(255) NOT NULL,
+  `state` varchar(255) NOT NULL,
+  `zip` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `phone` varchar(255) NOT NULL,
+  `familyId` int(11) DEFAULT NULL,
+  `eventId` int(11) NOT NULL,
+  `ticketPickUpLoc` int(11) DEFAULT NULL,
+  `paymentType` varchar(255) NOT NULL,
+  `totalTicketAmount` float NOT NULL,
+  `paymentAuthCode` varchar(255) DEFAULT NULL,
+  `amountCollected` float DEFAULT NULL,
+  `totalAmount` float DEFAULT NULL,
+  `sevakCredentials` varchar(255) DEFAULT NULL,
+  `checkNo` int(11) DEFAULT NULL,
+  `checkDate` date DEFAULT NULL,
+  `primaryChapter` varchar(255) DEFAULT NULL,
+  `comments` varchar(512) DEFAULT NULL,
+  `addedDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `modifiedDate` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`shoppingCartId`),
+  KEY `eventId` (`eventId`),
+  KEY `familyId` (`familyId`),
+  KEY `ticketPickUpLoc` (`ticketPickUpLoc`),
+  CONSTRAINT `ticketsalesmaster_ibfk_1` FOREIGN KEY (`eventId`) REFERENCES `eventmaster` (`eventIDNum`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  CONSTRAINT `ticketsalesmaster_ibfk_2` FOREIGN KEY (`familyId`) REFERENCES `familypreferences` (`familyId`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  CONSTRAINT `ticketsalesmaster_ibfk_3` FOREIGN KEY (`ticketPickUpLoc`) REFERENCES `ticketpickuplocations` (`locationId`) ON DELETE NO ACTION ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=1009 DEFAULT CHARSET=latin1;
+
+/*Data for the table `ticketsalesmaster` */
+
+insert  into `ticketsalesmaster`(`shoppingCartId`,`firstName`,`lastName`,`addressLine1`,`addressLine2`,`city`,`state`,`zip`,`email`,`phone`,`familyId`,`eventId`,`ticketPickUpLoc`,`paymentType`,`totalTicketAmount`,`paymentAuthCode`,`amountCollected`,`totalAmount`,`sevakCredentials`,`checkNo`,`checkDate`,`primaryChapter`,`comments`,`addedDate`,`modifiedDate`) values (1000,'Amit','Mukherjee','5823 Blue Sky','','Elkridge','MD','21075','amit.mukherjee@zephyranywhere.com','4435693603',NULL,1,NULL,'Credit Card',0,'123456',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-06 14:17:06','2016-03-06 14:19:53');
+insert  into `ticketsalesmaster`(`shoppingCartId`,`firstName`,`lastName`,`addressLine1`,`addressLine2`,`city`,`state`,`zip`,`email`,`phone`,`familyId`,`eventId`,`ticketPickUpLoc`,`paymentType`,`totalTicketAmount`,`paymentAuthCode`,`amountCollected`,`totalAmount`,`sevakCredentials`,`checkNo`,`checkDate`,`primaryChapter`,`comments`,`addedDate`,`modifiedDate`) values (1001,'Amit','Mukherjee','5823 Blue Sky','','Elkridge','MD','21075','amit.mukherjee@zephyranywhere.com','4435693603',NULL,1,NULL,'Credit Card',0,'123456',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-06 14:55:15','2016-03-06 15:00:08');
+insert  into `ticketsalesmaster`(`shoppingCartId`,`firstName`,`lastName`,`addressLine1`,`addressLine2`,`city`,`state`,`zip`,`email`,`phone`,`familyId`,`eventId`,`ticketPickUpLoc`,`paymentType`,`totalTicketAmount`,`paymentAuthCode`,`amountCollected`,`totalAmount`,`sevakCredentials`,`checkNo`,`checkDate`,`primaryChapter`,`comments`,`addedDate`,`modifiedDate`) values (1002,'Amit','Mukherjee','5823 Blue Sky','','Elkridge','MD','21075','amit.mukherjee@zephyranywhere.com','4435693603',NULL,1,NULL,'Credit Card',0,'123456',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-06 15:03:20','2016-03-06 15:05:09');
+insert  into `ticketsalesmaster`(`shoppingCartId`,`firstName`,`lastName`,`addressLine1`,`addressLine2`,`city`,`state`,`zip`,`email`,`phone`,`familyId`,`eventId`,`ticketPickUpLoc`,`paymentType`,`totalTicketAmount`,`paymentAuthCode`,`amountCollected`,`totalAmount`,`sevakCredentials`,`checkNo`,`checkDate`,`primaryChapter`,`comments`,`addedDate`,`modifiedDate`) values (1003,'Amit','Mukherjee','5823 Blue Sky','','Elkridge','MD','21075','amit.mukherjee@zephyranywhere.com','4435693603',NULL,1,NULL,'Credit Card',0,'123456',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-06 15:53:14','2016-03-06 15:54:10');
+insert  into `ticketsalesmaster`(`shoppingCartId`,`firstName`,`lastName`,`addressLine1`,`addressLine2`,`city`,`state`,`zip`,`email`,`phone`,`familyId`,`eventId`,`ticketPickUpLoc`,`paymentType`,`totalTicketAmount`,`paymentAuthCode`,`amountCollected`,`totalAmount`,`sevakCredentials`,`checkNo`,`checkDate`,`primaryChapter`,`comments`,`addedDate`,`modifiedDate`) values (1004,'Amit','Mukherjee','5823 Blue Sky','','Elkridge','MD','21075','amit.mukherjee@zephyranywhere.com','4435693603',NULL,1,NULL,'E-Check',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-06 15:56:21','2016-03-06 15:56:21');
+insert  into `ticketsalesmaster`(`shoppingCartId`,`firstName`,`lastName`,`addressLine1`,`addressLine2`,`city`,`state`,`zip`,`email`,`phone`,`familyId`,`eventId`,`ticketPickUpLoc`,`paymentType`,`totalTicketAmount`,`paymentAuthCode`,`amountCollected`,`totalAmount`,`sevakCredentials`,`checkNo`,`checkDate`,`primaryChapter`,`comments`,`addedDate`,`modifiedDate`) values (1005,'Amit','Mukherjee','5823 Blue Sky','','Elkridge','MD','21075','amit.mukherjee@zephyranywhere.com','4435693603',NULL,1,NULL,'Credit Card',0,'123456',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-06 19:22:14','2016-03-06 19:23:33');
+insert  into `ticketsalesmaster`(`shoppingCartId`,`firstName`,`lastName`,`addressLine1`,`addressLine2`,`city`,`state`,`zip`,`email`,`phone`,`familyId`,`eventId`,`ticketPickUpLoc`,`paymentType`,`totalTicketAmount`,`paymentAuthCode`,`amountCollected`,`totalAmount`,`sevakCredentials`,`checkNo`,`checkDate`,`primaryChapter`,`comments`,`addedDate`,`modifiedDate`) values (1006,'Amit','Mukherjee','5823 Blue Sky','','Elkridge','MD','21075','amit.mukherjee@zephyranywhere.com','4435693603',NULL,1,NULL,'Credit Card',0,'123456',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-06 21:42:06','2016-03-06 21:46:12');
+insert  into `ticketsalesmaster`(`shoppingCartId`,`firstName`,`lastName`,`addressLine1`,`addressLine2`,`city`,`state`,`zip`,`email`,`phone`,`familyId`,`eventId`,`ticketPickUpLoc`,`paymentType`,`totalTicketAmount`,`paymentAuthCode`,`amountCollected`,`totalAmount`,`sevakCredentials`,`checkNo`,`checkDate`,`primaryChapter`,`comments`,`addedDate`,`modifiedDate`) values (1007,'Amit','Mukherjee','5823 Blue Sky','','Elkridge','MD','21075','amit.mukherjee@zephyranywhere.com','4435693603',NULL,1,NULL,'Credit Card',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-06 22:39:37','2016-03-06 22:39:37');
+insert  into `ticketsalesmaster`(`shoppingCartId`,`firstName`,`lastName`,`addressLine1`,`addressLine2`,`city`,`state`,`zip`,`email`,`phone`,`familyId`,`eventId`,`ticketPickUpLoc`,`paymentType`,`totalTicketAmount`,`paymentAuthCode`,`amountCollected`,`totalAmount`,`sevakCredentials`,`checkNo`,`checkDate`,`primaryChapter`,`comments`,`addedDate`,`modifiedDate`) values (1008,'Amit','Mukherjee','5823 Blue Sky','','Elkridge','MD','21075','amit.mukherjee@zephyranywhere.com','4435693603',NULL,1,NULL,'Credit Card',0,'123456',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-07 07:42:15','2016-03-07 07:42:52');
+
+/*Table structure for table `ticketsalesmastercopy` */
+
+CREATE TABLE `ticketsalesmastercopy` (
+  `shoppingCartId` int(11) NOT NULL AUTO_INCREMENT,
+  `firstName` varchar(255) NOT NULL,
+  `lastName` varchar(255) NOT NULL,
+  `addressLine1` varchar(512) NOT NULL,
+  `addressLine2` varchar(512) DEFAULT NULL,
+  `city` varchar(255) NOT NULL,
+  `state` varchar(255) NOT NULL,
+  `zip` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `phone` varchar(255) NOT NULL,
+  `familyId` int(11) DEFAULT NULL,
+  `eventId` int(11) NOT NULL,
+  `ticketPickUpLoc` int(11) DEFAULT NULL,
+  `paymentType` varchar(255) NOT NULL,
+  `totalTicketAmount` float NOT NULL,
+  `paymentAuthCode` varchar(255) DEFAULT NULL,
+  `amountCollected` float DEFAULT NULL,
+  `totalAmount` float DEFAULT NULL,
+  `sevakCredentials` varchar(255) DEFAULT NULL,
+  `checkNo` int(11) DEFAULT NULL,
+  `checkDate` date DEFAULT NULL,
+  `primaryChapter` varchar(255) DEFAULT NULL,
+  `comments` varchar(512) DEFAULT NULL,
+  `addedDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `modifiedDate` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`shoppingCartId`)
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=latin1;
+
+/*Data for the table `ticketsalesmastercopy` */
+
+insert  into `ticketsalesmastercopy`(`shoppingCartId`,`firstName`,`lastName`,`addressLine1`,`addressLine2`,`city`,`state`,`zip`,`email`,`phone`,`familyId`,`eventId`,`ticketPickUpLoc`,`paymentType`,`totalTicketAmount`,`paymentAuthCode`,`amountCollected`,`totalAmount`,`sevakCredentials`,`checkNo`,`checkDate`,`primaryChapter`,`comments`,`addedDate`,`modifiedDate`) values (1,'Amit','Mukherjee','5823 Blue Sky','','Elkridge','MD','21075','amit.mukherjee@zephyranywhere.com','4435693603',NULL,1,NULL,'Credit Card',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-04 15:36:49','2016-03-04 15:36:49');
+insert  into `ticketsalesmastercopy`(`shoppingCartId`,`firstName`,`lastName`,`addressLine1`,`addressLine2`,`city`,`state`,`zip`,`email`,`phone`,`familyId`,`eventId`,`ticketPickUpLoc`,`paymentType`,`totalTicketAmount`,`paymentAuthCode`,`amountCollected`,`totalAmount`,`sevakCredentials`,`checkNo`,`checkDate`,`primaryChapter`,`comments`,`addedDate`,`modifiedDate`) values (2,'Amit','Mukherjee','5823 Blue Sky','','Elkridge','MD','21075','amit.mukherjee@zephyranywhere.com','4435693603',NULL,1,NULL,'Credit Card',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-04 15:37:38','2016-03-04 15:37:38');
+insert  into `ticketsalesmastercopy`(`shoppingCartId`,`firstName`,`lastName`,`addressLine1`,`addressLine2`,`city`,`state`,`zip`,`email`,`phone`,`familyId`,`eventId`,`ticketPickUpLoc`,`paymentType`,`totalTicketAmount`,`paymentAuthCode`,`amountCollected`,`totalAmount`,`sevakCredentials`,`checkNo`,`checkDate`,`primaryChapter`,`comments`,`addedDate`,`modifiedDate`) values (3,'Amit','Mukherjee','5823 Blue Sky','','Elkridge','MD','21075','amit.mukherjee@zephyranywhere.com','4435693603',NULL,1,NULL,'Credit Card',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-04 15:41:21','2016-03-04 15:41:21');
+insert  into `ticketsalesmastercopy`(`shoppingCartId`,`firstName`,`lastName`,`addressLine1`,`addressLine2`,`city`,`state`,`zip`,`email`,`phone`,`familyId`,`eventId`,`ticketPickUpLoc`,`paymentType`,`totalTicketAmount`,`paymentAuthCode`,`amountCollected`,`totalAmount`,`sevakCredentials`,`checkNo`,`checkDate`,`primaryChapter`,`comments`,`addedDate`,`modifiedDate`) values (4,'Jonathan','Woodward','1 Annapolis Street, Suite 200','','Annapolis','Maryland','21401','amit.mukherjee@zephyranywhere.com','2406768840',NULL,1,NULL,'Credit Card',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-04 15:44:49','2016-03-04 15:44:49');
+insert  into `ticketsalesmastercopy`(`shoppingCartId`,`firstName`,`lastName`,`addressLine1`,`addressLine2`,`city`,`state`,`zip`,`email`,`phone`,`familyId`,`eventId`,`ticketPickUpLoc`,`paymentType`,`totalTicketAmount`,`paymentAuthCode`,`amountCollected`,`totalAmount`,`sevakCredentials`,`checkNo`,`checkDate`,`primaryChapter`,`comments`,`addedDate`,`modifiedDate`) values (5,'Amit','Mukherjee','5823 Blue Sky','','Elkridge','VA','21075','akmukherjee@gmail.com','2406768840',NULL,1,NULL,'Credit Card',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-04 15:45:55','2016-03-04 15:45:55');
+insert  into `ticketsalesmastercopy`(`shoppingCartId`,`firstName`,`lastName`,`addressLine1`,`addressLine2`,`city`,`state`,`zip`,`email`,`phone`,`familyId`,`eventId`,`ticketPickUpLoc`,`paymentType`,`totalTicketAmount`,`paymentAuthCode`,`amountCollected`,`totalAmount`,`sevakCredentials`,`checkNo`,`checkDate`,`primaryChapter`,`comments`,`addedDate`,`modifiedDate`) values (6,'Amit','Mukherjee','5823 Blue Sky','','Elkridge','VA','21075','akmukherjee@gmail.com','2406768840',NULL,1,NULL,'Credit Card',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-04 15:46:56','2016-03-04 15:46:56');
+insert  into `ticketsalesmastercopy`(`shoppingCartId`,`firstName`,`lastName`,`addressLine1`,`addressLine2`,`city`,`state`,`zip`,`email`,`phone`,`familyId`,`eventId`,`ticketPickUpLoc`,`paymentType`,`totalTicketAmount`,`paymentAuthCode`,`amountCollected`,`totalAmount`,`sevakCredentials`,`checkNo`,`checkDate`,`primaryChapter`,`comments`,`addedDate`,`modifiedDate`) values (7,'Amit','Mukherjee','5823 Blue Sky','','Elkridge','VA','21075','akmukherjee@gmail.com','2406768840',NULL,1,NULL,'Credit Card',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-04 15:46:57','2016-03-04 15:46:57');
+insert  into `ticketsalesmastercopy`(`shoppingCartId`,`firstName`,`lastName`,`addressLine1`,`addressLine2`,`city`,`state`,`zip`,`email`,`phone`,`familyId`,`eventId`,`ticketPickUpLoc`,`paymentType`,`totalTicketAmount`,`paymentAuthCode`,`amountCollected`,`totalAmount`,`sevakCredentials`,`checkNo`,`checkDate`,`primaryChapter`,`comments`,`addedDate`,`modifiedDate`) values (8,'Amit','Mukherjee','5823 Blue Sky','','Elkridge','MN','21075','amit.mukherjee@zephyranywhere.com','4435693603',NULL,1,NULL,'Credit Card',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-04 16:20:45','2016-03-04 16:20:45');
+insert  into `ticketsalesmastercopy`(`shoppingCartId`,`firstName`,`lastName`,`addressLine1`,`addressLine2`,`city`,`state`,`zip`,`email`,`phone`,`familyId`,`eventId`,`ticketPickUpLoc`,`paymentType`,`totalTicketAmount`,`paymentAuthCode`,`amountCollected`,`totalAmount`,`sevakCredentials`,`checkNo`,`checkDate`,`primaryChapter`,`comments`,`addedDate`,`modifiedDate`) values (9,'Amit','Mukherjee','5823 Blue Sky','','Elkridge','MN','21075','amit.mukherjee@zephyranywhere.com','4435693603',NULL,1,NULL,'Credit Card',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-04 16:21:12','2016-03-04 16:21:12');
+insert  into `ticketsalesmastercopy`(`shoppingCartId`,`firstName`,`lastName`,`addressLine1`,`addressLine2`,`city`,`state`,`zip`,`email`,`phone`,`familyId`,`eventId`,`ticketPickUpLoc`,`paymentType`,`totalTicketAmount`,`paymentAuthCode`,`amountCollected`,`totalAmount`,`sevakCredentials`,`checkNo`,`checkDate`,`primaryChapter`,`comments`,`addedDate`,`modifiedDate`) values (10,'Amit','Mukherjee','5823 Blue Sky','','Elkridge','MN','21075','amit.mukherjee@zephyranywhere.com','4435693603',NULL,1,NULL,'Credit Card',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-04 16:25:10','2016-03-04 16:25:10');
+insert  into `ticketsalesmastercopy`(`shoppingCartId`,`firstName`,`lastName`,`addressLine1`,`addressLine2`,`city`,`state`,`zip`,`email`,`phone`,`familyId`,`eventId`,`ticketPickUpLoc`,`paymentType`,`totalTicketAmount`,`paymentAuthCode`,`amountCollected`,`totalAmount`,`sevakCredentials`,`checkNo`,`checkDate`,`primaryChapter`,`comments`,`addedDate`,`modifiedDate`) values (11,'Amit','Mukherjee','5823 Blue Sky','','Elkridge','MD','21075','amit.mukherjee@zephyranywhere.com','4435693603',NULL,1,NULL,'Credit Card',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-04 16:36:30','2016-03-04 16:36:30');
+insert  into `ticketsalesmastercopy`(`shoppingCartId`,`firstName`,`lastName`,`addressLine1`,`addressLine2`,`city`,`state`,`zip`,`email`,`phone`,`familyId`,`eventId`,`ticketPickUpLoc`,`paymentType`,`totalTicketAmount`,`paymentAuthCode`,`amountCollected`,`totalAmount`,`sevakCredentials`,`checkNo`,`checkDate`,`primaryChapter`,`comments`,`addedDate`,`modifiedDate`) values (12,'Amit','Mukherjee','5823 Blue Sky','','Elkridge','MD','21075','amit.mukherjee@zephyranywhere.com','4435693603',NULL,1,NULL,'Credit Card',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-04 16:51:07','2016-03-04 16:51:07');
+insert  into `ticketsalesmastercopy`(`shoppingCartId`,`firstName`,`lastName`,`addressLine1`,`addressLine2`,`city`,`state`,`zip`,`email`,`phone`,`familyId`,`eventId`,`ticketPickUpLoc`,`paymentType`,`totalTicketAmount`,`paymentAuthCode`,`amountCollected`,`totalAmount`,`sevakCredentials`,`checkNo`,`checkDate`,`primaryChapter`,`comments`,`addedDate`,`modifiedDate`) values (13,'Amit','Mukherjee','5823 Blue Sky','','Elkridge','MD','21075','amit.mukherjee@zephyranywhere.com','4435693603',NULL,1,NULL,'Credit Card',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-04 16:56:21','2016-03-04 16:56:21');
+insert  into `ticketsalesmastercopy`(`shoppingCartId`,`firstName`,`lastName`,`addressLine1`,`addressLine2`,`city`,`state`,`zip`,`email`,`phone`,`familyId`,`eventId`,`ticketPickUpLoc`,`paymentType`,`totalTicketAmount`,`paymentAuthCode`,`amountCollected`,`totalAmount`,`sevakCredentials`,`checkNo`,`checkDate`,`primaryChapter`,`comments`,`addedDate`,`modifiedDate`) values (14,'Amit','Mukherjee','5823 Blue Sky','','Elkridge','MD','21075','amit.mukherjee@zephyranywhere.com','4435693603',NULL,1,NULL,'Credit Card',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-04 16:58:36','2016-03-04 16:58:36');
+insert  into `ticketsalesmastercopy`(`shoppingCartId`,`firstName`,`lastName`,`addressLine1`,`addressLine2`,`city`,`state`,`zip`,`email`,`phone`,`familyId`,`eventId`,`ticketPickUpLoc`,`paymentType`,`totalTicketAmount`,`paymentAuthCode`,`amountCollected`,`totalAmount`,`sevakCredentials`,`checkNo`,`checkDate`,`primaryChapter`,`comments`,`addedDate`,`modifiedDate`) values (15,'Amit','Mukherjee','5823 Blue Sky','','Elkridge','MD','21075','amit.mukherjee@zephyranywhere.com','4435693603',NULL,1,NULL,'Credit Card',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-04 17:02:24','2016-03-04 17:02:24');
+insert  into `ticketsalesmastercopy`(`shoppingCartId`,`firstName`,`lastName`,`addressLine1`,`addressLine2`,`city`,`state`,`zip`,`email`,`phone`,`familyId`,`eventId`,`ticketPickUpLoc`,`paymentType`,`totalTicketAmount`,`paymentAuthCode`,`amountCollected`,`totalAmount`,`sevakCredentials`,`checkNo`,`checkDate`,`primaryChapter`,`comments`,`addedDate`,`modifiedDate`) values (16,'Amit','Mukherjee','5823 Blue Sky','','Elkridge','MD','21075','amit.mukherjee@zephyranywhere.com','4435693603',NULL,1,NULL,'Credit Card',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-04 17:07:06','2016-03-04 17:07:06');
+insert  into `ticketsalesmastercopy`(`shoppingCartId`,`firstName`,`lastName`,`addressLine1`,`addressLine2`,`city`,`state`,`zip`,`email`,`phone`,`familyId`,`eventId`,`ticketPickUpLoc`,`paymentType`,`totalTicketAmount`,`paymentAuthCode`,`amountCollected`,`totalAmount`,`sevakCredentials`,`checkNo`,`checkDate`,`primaryChapter`,`comments`,`addedDate`,`modifiedDate`) values (17,'Amit','Mukherjee','5823 Blue Sky','','Elkridge','MD','21075','amit.mukherjee@zephyranywhere.com','4435693603',NULL,1,NULL,'Credit Card',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-04 17:07:54','2016-03-04 17:07:54');
+insert  into `ticketsalesmastercopy`(`shoppingCartId`,`firstName`,`lastName`,`addressLine1`,`addressLine2`,`city`,`state`,`zip`,`email`,`phone`,`familyId`,`eventId`,`ticketPickUpLoc`,`paymentType`,`totalTicketAmount`,`paymentAuthCode`,`amountCollected`,`totalAmount`,`sevakCredentials`,`checkNo`,`checkDate`,`primaryChapter`,`comments`,`addedDate`,`modifiedDate`) values (18,'Amit','Mukherjee','5823 Blue Sky','','Elkridge','MD','21075','amit.mukherjee@zephyranywhere.com','4435693603',NULL,1,NULL,'Credit Card',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-04 17:45:46','2016-03-04 17:45:46');
+insert  into `ticketsalesmastercopy`(`shoppingCartId`,`firstName`,`lastName`,`addressLine1`,`addressLine2`,`city`,`state`,`zip`,`email`,`phone`,`familyId`,`eventId`,`ticketPickUpLoc`,`paymentType`,`totalTicketAmount`,`paymentAuthCode`,`amountCollected`,`totalAmount`,`sevakCredentials`,`checkNo`,`checkDate`,`primaryChapter`,`comments`,`addedDate`,`modifiedDate`) values (19,'Amit','Mukherjee','5823 Blue Sky','','Elkridge','MD','21075','amit.mukherjee@zephyranywhere.com','4435693603',NULL,1,NULL,'Credit Card',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-04 17:45:46','2016-03-04 17:45:46');
+insert  into `ticketsalesmastercopy`(`shoppingCartId`,`firstName`,`lastName`,`addressLine1`,`addressLine2`,`city`,`state`,`zip`,`email`,`phone`,`familyId`,`eventId`,`ticketPickUpLoc`,`paymentType`,`totalTicketAmount`,`paymentAuthCode`,`amountCollected`,`totalAmount`,`sevakCredentials`,`checkNo`,`checkDate`,`primaryChapter`,`comments`,`addedDate`,`modifiedDate`) values (20,'Amit','Mukherjee','5823 Blue Sky','','Elkridge','MD','21075','amit.mukherjee@zephyranywhere.com','4435693603',NULL,1,NULL,'Credit Card',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-04 17:55:27','2016-03-04 17:55:27');
+insert  into `ticketsalesmastercopy`(`shoppingCartId`,`firstName`,`lastName`,`addressLine1`,`addressLine2`,`city`,`state`,`zip`,`email`,`phone`,`familyId`,`eventId`,`ticketPickUpLoc`,`paymentType`,`totalTicketAmount`,`paymentAuthCode`,`amountCollected`,`totalAmount`,`sevakCredentials`,`checkNo`,`checkDate`,`primaryChapter`,`comments`,`addedDate`,`modifiedDate`) values (21,'Amit','Mukherjee','5823 Blue Sky','','Elkridge','MD','21075','amit.mukherjee@zephyranywhere.com','4435693603',NULL,1,NULL,'Credit Card',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-04 22:35:33','2016-03-04 22:35:33');
+insert  into `ticketsalesmastercopy`(`shoppingCartId`,`firstName`,`lastName`,`addressLine1`,`addressLine2`,`city`,`state`,`zip`,`email`,`phone`,`familyId`,`eventId`,`ticketPickUpLoc`,`paymentType`,`totalTicketAmount`,`paymentAuthCode`,`amountCollected`,`totalAmount`,`sevakCredentials`,`checkNo`,`checkDate`,`primaryChapter`,`comments`,`addedDate`,`modifiedDate`) values (22,'Amit','Mukherjee','5823 Blue Sky','','Elkridge','MD','21075','amit.mukherjee@zephyranywhere.com','4435693603',NULL,1,NULL,'Credit Card',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-04 22:39:37','2016-03-04 22:39:37');
+insert  into `ticketsalesmastercopy`(`shoppingCartId`,`firstName`,`lastName`,`addressLine1`,`addressLine2`,`city`,`state`,`zip`,`email`,`phone`,`familyId`,`eventId`,`ticketPickUpLoc`,`paymentType`,`totalTicketAmount`,`paymentAuthCode`,`amountCollected`,`totalAmount`,`sevakCredentials`,`checkNo`,`checkDate`,`primaryChapter`,`comments`,`addedDate`,`modifiedDate`) values (23,'Amit','Mukherjee','5823 Blue Sky','','Elkridge','MD','21075','amit.mukherjee@zephyranywhere.com','4435693603',NULL,1,NULL,'Credit Card',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-04 22:41:45','2016-03-04 22:41:45');
+insert  into `ticketsalesmastercopy`(`shoppingCartId`,`firstName`,`lastName`,`addressLine1`,`addressLine2`,`city`,`state`,`zip`,`email`,`phone`,`familyId`,`eventId`,`ticketPickUpLoc`,`paymentType`,`totalTicketAmount`,`paymentAuthCode`,`amountCollected`,`totalAmount`,`sevakCredentials`,`checkNo`,`checkDate`,`primaryChapter`,`comments`,`addedDate`,`modifiedDate`) values (24,'Amit','Mukherjee','5823 Blue Sky','','Elkridge','MD','21075','amit.mukherjee@zephyranywhere.com','4435693603',NULL,1,NULL,'Credit Card',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-04 22:50:16','2016-03-04 22:50:16');
+insert  into `ticketsalesmastercopy`(`shoppingCartId`,`firstName`,`lastName`,`addressLine1`,`addressLine2`,`city`,`state`,`zip`,`email`,`phone`,`familyId`,`eventId`,`ticketPickUpLoc`,`paymentType`,`totalTicketAmount`,`paymentAuthCode`,`amountCollected`,`totalAmount`,`sevakCredentials`,`checkNo`,`checkDate`,`primaryChapter`,`comments`,`addedDate`,`modifiedDate`) values (25,'Amit','Mukherjee','5823 Blue Sky','','Elkridge','MD','21075','amit.mukherjee@zephyranywhere.com','4435693603',NULL,1,NULL,'Credit Card',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-04 22:52:37','2016-03-04 22:52:37');
+insert  into `ticketsalesmastercopy`(`shoppingCartId`,`firstName`,`lastName`,`addressLine1`,`addressLine2`,`city`,`state`,`zip`,`email`,`phone`,`familyId`,`eventId`,`ticketPickUpLoc`,`paymentType`,`totalTicketAmount`,`paymentAuthCode`,`amountCollected`,`totalAmount`,`sevakCredentials`,`checkNo`,`checkDate`,`primaryChapter`,`comments`,`addedDate`,`modifiedDate`) values (26,'Amit','Mukherjee','5823 Blue Sky','','Elkridge','MD','21075','amit.mukherjee@zephyranywhere.com','4435693603',NULL,1,NULL,'Credit Card',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-04 22:53:00','2016-03-04 22:53:00');
+insert  into `ticketsalesmastercopy`(`shoppingCartId`,`firstName`,`lastName`,`addressLine1`,`addressLine2`,`city`,`state`,`zip`,`email`,`phone`,`familyId`,`eventId`,`ticketPickUpLoc`,`paymentType`,`totalTicketAmount`,`paymentAuthCode`,`amountCollected`,`totalAmount`,`sevakCredentials`,`checkNo`,`checkDate`,`primaryChapter`,`comments`,`addedDate`,`modifiedDate`) values (27,'Amit','Mukherjee','5823 Blue Sky','','Elkridge','MD','21075','amit.mukherjee@zephyranywhere.com','4435693603',NULL,1,NULL,'Credit Card',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-04 22:54:26','2016-03-04 22:54:26');
+insert  into `ticketsalesmastercopy`(`shoppingCartId`,`firstName`,`lastName`,`addressLine1`,`addressLine2`,`city`,`state`,`zip`,`email`,`phone`,`familyId`,`eventId`,`ticketPickUpLoc`,`paymentType`,`totalTicketAmount`,`paymentAuthCode`,`amountCollected`,`totalAmount`,`sevakCredentials`,`checkNo`,`checkDate`,`primaryChapter`,`comments`,`addedDate`,`modifiedDate`) values (28,'Amit','Mukherjee','5823 Blue Sky','','Elkridge','MD','21075','amit.mukherjee@zephyranywhere.com','4435693603',NULL,1,NULL,'Credit Card',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-04 22:58:20','2016-03-04 22:58:20');
+insert  into `ticketsalesmastercopy`(`shoppingCartId`,`firstName`,`lastName`,`addressLine1`,`addressLine2`,`city`,`state`,`zip`,`email`,`phone`,`familyId`,`eventId`,`ticketPickUpLoc`,`paymentType`,`totalTicketAmount`,`paymentAuthCode`,`amountCollected`,`totalAmount`,`sevakCredentials`,`checkNo`,`checkDate`,`primaryChapter`,`comments`,`addedDate`,`modifiedDate`) values (29,'Amit','Mukherjee','5823 Blue Sky','','Elkridge','MD','21075','amit.mukherjee@zephyranywhere.com','4435693603',NULL,1,NULL,'Credit Card',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-05 08:08:27','2016-03-05 08:08:27');
+insert  into `ticketsalesmastercopy`(`shoppingCartId`,`firstName`,`lastName`,`addressLine1`,`addressLine2`,`city`,`state`,`zip`,`email`,`phone`,`familyId`,`eventId`,`ticketPickUpLoc`,`paymentType`,`totalTicketAmount`,`paymentAuthCode`,`amountCollected`,`totalAmount`,`sevakCredentials`,`checkNo`,`checkDate`,`primaryChapter`,`comments`,`addedDate`,`modifiedDate`) values (30,'Amit','Mukherjee','5823 Blue Sky','','Elkridge','MD','21075','amit.mukherjee@zephyranywhere.com','4435693603',NULL,1,NULL,'Credit Card',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-05 08:12:42','2016-03-05 08:12:42');
+insert  into `ticketsalesmastercopy`(`shoppingCartId`,`firstName`,`lastName`,`addressLine1`,`addressLine2`,`city`,`state`,`zip`,`email`,`phone`,`familyId`,`eventId`,`ticketPickUpLoc`,`paymentType`,`totalTicketAmount`,`paymentAuthCode`,`amountCollected`,`totalAmount`,`sevakCredentials`,`checkNo`,`checkDate`,`primaryChapter`,`comments`,`addedDate`,`modifiedDate`) values (31,'Amit','Mukherjee','5823 Blue Sky','','Elkridge','MD','21075','amit.mukherjee@zephyranywhere.com','4435693603',NULL,1,NULL,'Credit Card',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-05 08:17:11','2016-03-05 08:17:11');
+insert  into `ticketsalesmastercopy`(`shoppingCartId`,`firstName`,`lastName`,`addressLine1`,`addressLine2`,`city`,`state`,`zip`,`email`,`phone`,`familyId`,`eventId`,`ticketPickUpLoc`,`paymentType`,`totalTicketAmount`,`paymentAuthCode`,`amountCollected`,`totalAmount`,`sevakCredentials`,`checkNo`,`checkDate`,`primaryChapter`,`comments`,`addedDate`,`modifiedDate`) values (32,'Amit','Mukherjee','5823 Blue Sky','','Elkridge','MD','21075','amit.mukherjee@zephyranywhere.com','4435693603',NULL,1,NULL,'Credit Card',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-06 00:35:07','2016-03-06 00:35:07');
+insert  into `ticketsalesmastercopy`(`shoppingCartId`,`firstName`,`lastName`,`addressLine1`,`addressLine2`,`city`,`state`,`zip`,`email`,`phone`,`familyId`,`eventId`,`ticketPickUpLoc`,`paymentType`,`totalTicketAmount`,`paymentAuthCode`,`amountCollected`,`totalAmount`,`sevakCredentials`,`checkNo`,`checkDate`,`primaryChapter`,`comments`,`addedDate`,`modifiedDate`) values (33,'Amit','Mukherjee','5823 Blue Sky','','Elkridge','MD','21075','amit.mukherjee@zephyranywhere.com','4435693603',NULL,1,NULL,'Credit Card',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-06 00:39:28','2016-03-06 00:39:28');
+insert  into `ticketsalesmastercopy`(`shoppingCartId`,`firstName`,`lastName`,`addressLine1`,`addressLine2`,`city`,`state`,`zip`,`email`,`phone`,`familyId`,`eventId`,`ticketPickUpLoc`,`paymentType`,`totalTicketAmount`,`paymentAuthCode`,`amountCollected`,`totalAmount`,`sevakCredentials`,`checkNo`,`checkDate`,`primaryChapter`,`comments`,`addedDate`,`modifiedDate`) values (34,'Amit','Mukherjee','5823 Blue Sky','','Elkridge','MD','21075','amit.mukherjee@zephyranywhere.com','4435693603',NULL,1,NULL,'Credit Card',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-06 00:43:12','2016-03-06 00:43:12');
+insert  into `ticketsalesmastercopy`(`shoppingCartId`,`firstName`,`lastName`,`addressLine1`,`addressLine2`,`city`,`state`,`zip`,`email`,`phone`,`familyId`,`eventId`,`ticketPickUpLoc`,`paymentType`,`totalTicketAmount`,`paymentAuthCode`,`amountCollected`,`totalAmount`,`sevakCredentials`,`checkNo`,`checkDate`,`primaryChapter`,`comments`,`addedDate`,`modifiedDate`) values (35,'Amit','Mukherjee','5823 Blue Sky','','Elkridge','MD','21075','amit.mukherjee@zephyranywhere.com','4435693603',NULL,1,NULL,'Credit Card',0,'45678c666',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-03-06 00:51:52','2016-03-06 01:13:11');
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
